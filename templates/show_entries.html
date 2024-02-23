@@ -11,9 +11,6 @@
   </form>
   <ul class="entries">
   {% for entry in entries %}
-<<<<<<< Updated upstream
-    <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}</li>
-=======
     <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
         <ins> </ins>
         <form action="/delete" method="post">
@@ -25,7 +22,6 @@
             <button name="edit" method=POST>Edit</button>
         </form>
     </li>
->>>>>>> Stashed changes
   {% else %}
     <li><em>Unbelievable.  No entries here so far</em></li>
   {% endfor %}
