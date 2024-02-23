@@ -93,6 +93,7 @@ def delete_entry():
 
 app.route('/new', methods=['POST'])
 def new_page():
+#thing
 
 
 app.route('/edit', methods=['POST'])
