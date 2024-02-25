@@ -68,7 +68,7 @@ def close_db(error):
 @app.route('/')
 def show_entries():
     db = get_db()
-    cur = db.execute('select title, text from entries order by id desc')
+    cur = db.execute('select id, title, text from entries order by id desc')
     entries = cur.fetchall()
     return render_template('show_entries.html', entries=entries)
 
@@ -81,3 +81,34 @@ def add_entry():
     db.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
+
+
+@app.route('/delete', methods=['POST'])
+def delete_entry():
+    db = get_db()
+    db.execute('delete from entries where id = ?',
+               [request.form['id']])
+    db.commit()
+    return redirect(url_for('show_entries'))
+
+
+@app.route('/edit', methods=['POST'])
+def new_page():
+    location = request.form['id']
+    db = get_db()
+    cur = db.execute('select title, text, id from entries where id = ?',
+                     [location])
+    locate = cur.fetchone()
+    return render_template('edit_page.html', locate=locate)
+
+
+@app.route('/', methods=['POST'])
+def update_edit():
+    db = get_db()
+    db.execute('update entries set title = ?, text = ? where id = ?',
+               [request.form['title'], request.form['text'], request.form['id']])
+    db.commit()
+    return redirect(url_for('show_entries'))
+
+
+
