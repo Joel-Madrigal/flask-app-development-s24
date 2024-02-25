@@ -91,17 +91,24 @@ def delete_entry():
     db.commit()
     return redirect(url_for('show_entries'))
 
-app.route('/new', methods=['POST'])
+
+@app.route('/edit', methods=['POST'])
 def new_page():
-#thing
-
-
-app.route('/edit', methods=['POST'])
-def edit_entry():
+    location = request.form['id']
     db = get_db()
-    db.execute('update entries set text = ',
-               [request.form['id']])
+    cur = db.execute('select title, text, id from entries where id = ?',
+                     [location])
+    locate = cur.fetchone()
+    return render_template('edit_page.html', locate=locate)
 
+
+@app.route('/', methods=['POST'])
+def update_edit():
+    db = get_db()
+    db.execute('update entries set title = ?, text = ? where id = ?',
+               [request.form['title'], request.form['text'], request.form['id']])
     db.commit()
     return redirect(url_for('show_entries'))
+
+
 
